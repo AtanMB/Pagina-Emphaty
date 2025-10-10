@@ -1,0 +1,62 @@
+Crear un usuario psicólogo
+
+Método: POST
+
+URL: http://localhost:3000/usuarios
+
+Body → raw → JSON:
+
+{
+  "nombre": "Laura",
+  "correo": "laura@mail.com",
+  "contraseña": "1234",
+  "rol": "Psicologo"
+}
+
+
+✅ Esto insertará un psicólogo en la tabla usuarios.
+
+🔹 2. Crear un usuario normal
+POST http://localhost:3000/usuarios
+
+
+Body:
+
+{
+  "nombre": "Pedro",
+  "correo": "pedro@mail.com",
+  "contraseña": "abcd",
+  "rol": "Usuario"
+}
+
+🔹 3. Ver todos los usuarios
+GET http://localhost:3000/usuarios
+
+
+👉 Aquí deberías ver a Laura (Psicólogo) y Pedro (Usuario).
+
+🔹 4. Usuario envía un testimonio
+POST http://localhost:3000/testimonios
+
+
+Body:
+
+{
+  "contenido": "Me sentí muy ansioso esta semana",
+  "usuarioId": 2
+}
+
+
+⚠️ Cambia el usuarioId por el ID real que viste en la tabla usuarios.
+
+🔹 5. Psicólogo revisa y aprueba/rechaza el testimonio
+PUT http://localhost:3000/testimonios/1/revisar
+
+
+Body:
+
+{
+  "psicologoId": 1,
+  "accion": "Aprobado",
+  "comentario": "Contenido válido y respetuoso"
+}
