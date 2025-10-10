@@ -1,41 +1,36 @@
-import React from 'react';
-import Style from '@/styles/Navbar.module.css';
+import React, { useState } from "react";
+import Link from "next/link";
+import Style from "@/styles/Navbar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useState } from 'react';
+
 export default function Navbar() {
-    const [menuMovil, setMenuMovil] = useState(false);
+  const [menuMovil, setMenuMovil] = useState(false);
 
+  const cambioMenuMovil = () => {
+    setMenuMovil(!menuMovil);
+  };
 
-    const cambioMenuMovil =() => {
-        setMenuMovil(!menuMovil);
-    }
-    return (
-        <div className={Style.NavBar}>
-            <p>ICONO</p>
+  return (
+    <nav className={Style.navbar}>
+      <div className={Style.logo}>
+        <span>💚 Emphaty</span>
+      </div>
 
-            <a onClick={() => cambioMenuMovil()} className={Style.IconMenuMovil}>
-                {menuMovil ? (
-                    <FontAwesomeIcon icon={faTimes} size="2x" />
+      <div className={Style.menuIcon} onClick={cambioMenuMovil}>
+        <FontAwesomeIcon icon={menuMovil ? faTimes : faBars} size="2x" />
+      </div>
 
-                ) : (
-                    <FontAwesomeIcon icon={faBars} size="2x" />
-
-                )}
-
-            </a>
-
-
-
-
-            <div className={menuMovil ?  Style.NavBar_items_Open :  Style.NavBar_items}>
-                <a>Inicio</a>
-                <a>Testimonios</a>
-                <a>Recursos</a>
-                <a>Sobre Nosotros</a>
-                <a>Cerrar Sesión</a>
-            </div>
-        </div>
-    )
+      <div
+        className={`${Style.navLinks} ${
+          menuMovil ? Style.navLinksMobile : ""
+        }`}
+      >
+        <Link href="/">Inicio</Link>
+        <Link href="/testimonios">Testimonios</Link>
+        <Link href="/recursos">Recursos</Link>
+        <Link href="/sobre-nosotros">Sobre Nosotros</Link>
+      </div>
+    </nav>
+  );
 }
-

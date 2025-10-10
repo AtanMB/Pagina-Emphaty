@@ -1,7 +1,8 @@
+/* /styles/Footer.module.css */
 .footer {
   background-color: #222;
   color: white;
   text-align: center;
-  padding: 1rem;
-  margin-top: auto; /* Empuja el footer hacia abajo */
+  padding: 1.5rem;
+  margin-top: auto;
 }
