@@ -1,41 +1,48 @@
 "use client";
 import { useEffect, useState } from "react";
+import { apiRequest } from "@/lib/api";
+// Asumiendo que has movido o crearás TestimonioCard en "@/components/TestimonioCard"
+import TestimonioCard from "@/components/TestimonioCard"; 
+// No necesitas importar "./globals.css" aquí si usas Tailwind en todo el proyecto
+// import "./globals.css"; 
 
 export default function TestimoniosPage() {
   const [testimonios, setTestimonios] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/testimonios`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        const data = await res.json();
-        setTestimonios(data);
-      } catch (err) {
-        console.error("Error al obtener testimonios:", err);
-      }
-    };
-    fetchData();
+    // La lógica de la API permanece igual
+    apiRequest("/testimonios")
+      .then(setTestimonios)
+      .catch((err) => console.error("Error al obtener testimonios:", err));
   }, []);
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Testimonios</h1>
+    // Contenedor principal: padding amplio y fondo sutil
+    <div className="min-h-screen bg-gray-50 p-8 md:p-12">
+      
+      {/* Título y subtítulo */}
+      <div className="max-w-6xl mx-auto mb-8">
+        <h1 className="text-4xl font-extrabold text-blue-800 mb-2">Historias que Inspiran</h1>
+        <p className="text-gray-600 text-lg">Lee los testimonios de quienes han encontrado apoyo.</p>
+      </div>
 
       {testimonios.length === 0 ? (
-        <p>No hay testimonios registrados aún.</p>
+        <div className="max-w-6xl mx-auto p-6 bg-white rounded-xl shadow-md text-center">
+            <p className="text-gray-500 text-lg">No hay testimonios disponibles aún. Sé el primero en compartir tu historia.</p>
+        </div>
       ) : (
-        <ul className="space-y-4">
+        // Cuadrícula moderna: 1 columna en móvil, 2 en tablets, 3 en desktop
+        <div className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {testimonios.map((t) => (
-            <li key={t.Testimonio_ID} className="border p-4 rounded-lg shadow-sm">
-              <p className="text-gray-700">{t.Contenido}</p>
-            </li>
+            <TestimonioCard
+              key={t.Testimonio_ID || t.id}
+              // Las props se mantienen igual
+              contenido={t.Contenido}
+              fecha={t.Fecha_Publicacion}
+              autor={t.Autor} 
+            />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

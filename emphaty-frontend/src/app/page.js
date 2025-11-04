@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api";
 import TestimonioCard from "@/components/TestimonioCard";
+import "./globals.css";
 
 export default function TestimoniosPage() {
   const [testimonios, setTestimonios] = useState([]);
