@@ -8,6 +8,12 @@ import styles from './chatbot.module.css'; // Importamos los estilos
 function getBotResponse(userInput) {
   const text = userInput.toLowerCase();
 
+  if (text.trim() === "coach") {
+    return { type: "image", url: "/coach.png", alt: "Coach de bienestar" };
+
+    
+  }
+
   if (text.includes("hola") || text.includes("buenos dias")) {
     return "¡Hola! Soy EmphatyBot. ¿Cómo puedo ayudarte hoy? Prueba con palabras clave como 'ansiedad', 'estrés' o 'dormir'";
   }
@@ -52,9 +58,14 @@ export default function ChatbotPage() {
 
     // 2. Obtiene y añade la respuesta del bot (con un pequeño retraso)
     setTimeout(() => {
-      const botResponse = { sender: 'bot', text: getBotResponse(input) };
+      const response = getBotResponse(input);
+      const botResponse =
+        typeof response === "string"
+          ? { sender: "bot", text: response }
+          : { sender: "bot", ...response }; // si es objeto (imagen), lo expande
       setMessages(prev => [...prev, botResponse]);
     }, 1000);
+    
 
     // 3. Limpia el input
     setInput('');
@@ -63,11 +74,20 @@ export default function ChatbotPage() {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatWindow} ref={chatWindowRef}>
-        {messages.map((msg, index) => (
-          <div key={index} className={`${styles.message} ${styles[msg.sender]}`}>
-            {msg.text}
-          </div>
-        ))}
+      {messages.map((msg, index) => (
+  <div key={index} className={`${styles.message} ${styles[msg.sender]}`}>
+    {msg.type === "image" ? (
+      <img
+        src={msg.url}
+        alt={msg.alt || "Imagen del bot"}
+        style={{ maxWidth: "100%", borderRadius: "10px" }}
+      />
+    ) : (
+      msg.text
+    )}
+  </div>
+))}
+
       </div>
       <form className={styles.inputForm} onSubmit={handleSendMessage}>
         <input

@@ -3,68 +3,84 @@ import { useState } from "react";
 import { apiRequest } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
-// Definición de estilos CSS como objetos JavaScript
 const styles = {
     pageContainer: {
         minHeight: '100vh',
-        backgroundColor: '#F3F4F6', // Fondo gris claro
+        backgroundColor: '#FAFAF5', // Fondo cálido
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '2rem'
     },
     formCard: {
-        backgroundColor: 'white',
+        backgroundColor: '#FAFAF5',
         padding: '2rem',
-        borderRadius: '0.75rem', // rounded-xl
-        boxShadow: '0 10px 15px rgba(0, 0, 0, 0.1)', // shadow-xl
+        borderRadius: '1rem',
+        boxShadow: '0 6px 14px rgba(0,0,0,0.1)',
+        borderTop: '5px solid rgb(103, 134, 89)',
         maxWidth: '400px',
         width: '100%',
+        transition: 'all 0.3s ease',
+        cursor: 'default',
+    },
+    formCardHover: {
+        transform: 'translateY(-4px)',
+        boxShadow: '0 10px 20px rgba(0,0,0,0.15)',
     },
     title: {
-        fontSize: '1.75rem', // text-3xl
-        fontWeight: '700', // font-bold
-        color: '#1F2937', // text-gray-800
+        fontSize: '1.75rem',
+        fontWeight: '800',
+        color: 'rgb(103, 134, 89)',
         marginBottom: '1.5rem',
         textAlign: 'center',
     },
     formGroup: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem', // gap-4
+        gap: '1rem',
     },
     input: {
         padding: '0.75rem',
-        border: '1px solid #D1D5DB', // border-gray-300
-        borderRadius: '0.375rem', // rounded-md
+        border: '1px solid #D1D5DB',
+        borderRadius: '0.5rem',
         fontSize: '1rem',
         transition: 'border-color 0.2s',
+        fontFamily: 'inherit',
     },
     select: {
         padding: '0.75rem',
         border: '1px solid #D1D5DB',
-        borderRadius: '0.375rem',
+        borderRadius: '0.5rem',
         fontSize: '1rem',
         backgroundColor: 'white',
         cursor: 'pointer',
+        fontFamily: 'inherit',
     },
     button: {
-        backgroundColor: '#2563EB', // bg-blue-600
+        backgroundColor: 'rgb(144, 176, 126)', // Verde armonioso
         color: 'white',
         padding: '0.75rem',
-        borderRadius: '0.375rem',
+        borderRadius: '0.5rem',
         fontSize: '1rem',
         fontWeight: '600',
         border: 'none',
         cursor: 'pointer',
         marginTop: '0.5rem',
-        transition: 'background-color 0.2s',
+        transition: 'all 0.2s',
     },
-    // Nota: El estilo hover no se puede aplicar con CSS en línea
+    buttonHover: {
+        backgroundColor: 'rgb(103, 134, 89)',
+    },
+    label: {
+        color: '#374151',
+        fontSize: '0.875rem',
+        marginTop: '0.5rem',
+    }
 };
 
 export default function RegisterPage() {
     const [form, setForm] = useState({ nombre: "", correo: "", contrasena: "", rol: "Usuario" });
+    const [hover, setHover] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -80,45 +96,51 @@ export default function RegisterPage() {
 
     return (
         <div style={styles.pageContainer}>
-            <div style={styles.formCard}>
+            <div
+                style={{ ...styles.formCard, ...(hover ? styles.formCardHover : {}) }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+            >
                 <h1 style={styles.title}>Crea tu Cuenta</h1>
-                
+
                 <form onSubmit={handleSubmit} style={styles.formGroup}>
-                    
-                    <input 
-                        placeholder="Nombre completo" 
-                        value={form.nombre} 
-                        onChange={e => setForm({ ...form, nombre: e.target.value })} 
+                    <input
+                        placeholder="Nombre completo"
+                        value={form.nombre}
+                        onChange={e => setForm({ ...form, nombre: e.target.value })}
                         style={styles.input}
                     />
-                    
-                    <input 
-                        type="email" 
-                        placeholder="Correo electrónico" 
-                        value={form.correo} 
-                        onChange={e => setForm({ ...form, correo: e.target.value })} 
+                    <input
+                        type="email"
+                        placeholder="Correo electrónico"
+                        value={form.correo}
+                        onChange={e => setForm({ ...form, correo: e.target.value })}
                         style={styles.input}
                     />
-                    
-                    <input 
-                        type="password" 
-                        placeholder="Contraseña" 
-                        value={form.contrasena} 
-                        onChange={e => setForm({ ...form, contrasena: e.target.value })} 
+                    <input
+                        type="password"
+                        placeholder="Contraseña"
+                        value={form.contrasena}
+                        onChange={e => setForm({ ...form, contrasena: e.target.value })}
                         style={styles.input}
                     />
-                    
-                    <label style={{ color: '#4B5563', fontSize: '0.875rem', marginTop: '0.5rem' }}>Tipo de Cuenta:</label>
-                    <select 
-                        value={form.rol} 
+
+                    <label style={styles.label}>Tipo de Cuenta:</label>
+                    <select
+                        value={form.rol}
                         onChange={e => setForm({ ...form, rol: e.target.value })}
                         style={styles.select}
                     >
                         <option value="Usuario">Usuario</option>
                         <option value="Psicologo">Psicólogo</option>
                     </select>
-                    
-                    <button style={styles.button}>
+
+                    <button
+                        type="submit"
+                        style={styles.button}
+                        onMouseEnter={e => e.currentTarget.style.backgroundColor = styles.buttonHover.backgroundColor}
+                        onMouseLeave={e => e.currentTarget.style.backgroundColor = styles.button.backgroundColor}
+                    >
                         Registrarse
                     </button>
                 </form>
